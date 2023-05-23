@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:webant_internship/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:webant_internship/blocs/image_bloc/image_bloc.dart';
 import 'package:webant_internship/blocs/image_picker_bloc/image_picker_bloc.dart';
+import 'package:webant_internship/blocs/users_bloc/users_bloc.dart';
 import 'package:webant_internship/utils/router.dart';
 
 class Application extends StatelessWidget {
@@ -21,6 +22,9 @@ class Application extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ImagePickerBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UsersBloc(),
         ),
       ],
       child: Sizer(
