@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/entities/login_entity.dart';
 
 class AuthenticateRepositoryImpl implements AuthenticateRepository {
   final Dio _dio;
@@ -8,7 +7,7 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
   AuthenticateRepositoryImpl(Dio dio) : _dio = dio;
 
   @override
-  Future<LoginEntity?> authenticateWithUsernameAndPassword({
+  Future<ClientLoginEntity?> authenticateWithUsernameAndPassword({
     required String username,
     required String password,
   }) async {
@@ -17,7 +16,7 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
     // Какой - то кринж
     final tokenResponse = await _dio.get(
       '/clients',
-      queryParameters: {'limit': double.maxFinite.toInt()},
+      queryParameters: {'limit': 15000},
     );
 
     if (tokenResponse.statusCode == 201) {
@@ -42,7 +41,10 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
       );
 
       if (response.statusCode == 200) {
-        return LoginEntity.fromJson(response.data);
+        return ClientLoginEntity(
+          clientEntity: client,
+          loginEntity: LoginEntity.fromJson(response.data),
+        );
       }
     }
     return null;
@@ -60,7 +62,10 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
       '/clients',
       data: {
         'name': username,
-        "allowedGrantTypes": ["password"]
+        "allowedGrantTypes": [
+          "password",
+          "refresh_token",
+        ]
       },
     );
 

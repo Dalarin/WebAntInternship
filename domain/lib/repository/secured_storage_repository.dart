@@ -1,16 +1,12 @@
 import 'package:domain/domain.dart';
-import 'package:domain/entities/login_entity.dart';
+import 'package:domain/entities/client_login_entity_wrapper.dart';
 
 abstract class SharedPreferencesRepository {
-  void saveLoginEntity({required LoginEntity entity});
+  void saveLoginEntity({required ClientLoginEntity entity});
 
   void saveUserEntity({required RegisterUserEntity entity});
 
-  void saveUserClient({required ClientEntity entity});
-
   Future<RegisterUserEntity?> getUserEntity();
 
-  Future<LoginEntity?> getLoginEntity();
-
-  Future<ClientEntity?> getClientEntity();
+  Future<ClientLoginEntity?> getLoginEntity();
 }
