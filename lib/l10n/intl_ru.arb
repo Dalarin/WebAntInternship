@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome!",
+  "createAnAccount": "Create an account",
+  "fillField": "Заполните поле {hint}",
+  "createAccount": "Create account",
+  "usernameRequired": "Username*",
+  "birthday": "Birthday",
+  "emailRequired": "E-mail*",
+  "passwordRequired": "Password*",
+  "confirmPasswordRequired": "Confirm password*"
+}

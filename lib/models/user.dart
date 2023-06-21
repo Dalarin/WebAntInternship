@@ -1,27 +1,29 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:domain/domain.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'generated/user.g.dart';
+part 'user.freezed.dart';
+part 'user.g.dart';
 
-@JsonSerializable()
-class User {
-  final int id;
-  final String? email;
-  final String? phone;
-  final String? fullName;
-  final String? userName;
-  @JsonKey(name: 'birthday')
-  final DateTime? birthDate;
+@freezed
+class User with _$User {
+  factory User({
+    required int id,
+    required String email,
+    required String userName,
+    String? phone,
+    DateTime? birthDate,
+  }) = _User;
 
-  const User({
-    required this.id,
-    this.email,
-    this.phone,
-    this.fullName,
-    this.userName,
-    required this.birthDate,
-  });
+  factory User.fromEntity(RegisterUserEntity entity) {
+    return User(
+      id: entity.id,
+      email: entity.email,
+      userName: entity.username,
+      phone: entity.phone,
+      birthDate: entity.birthDay,
+    );
+  }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
 }
