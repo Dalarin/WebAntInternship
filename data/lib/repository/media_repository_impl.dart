@@ -9,6 +9,7 @@ class MediaRepositoryImpl implements MediaRepository {
   @override
   Future<PaginatedWrapperEntity<MediaEntity>?> getMedia({
     int limit = 10,
+    int page = 0,
     bool popular = false,
     bool newMedia = false,
   }) async {
@@ -16,6 +17,7 @@ class MediaRepositoryImpl implements MediaRepository {
       '/photos',
       queryParameters: {
         'limit': limit,
+        'page': page,
         'popular': popular,
         'new': newMedia,
       },

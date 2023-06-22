@@ -5,6 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:webant_internship/resources/app_const.dart';
 
+import '../generated/l10n.dart';
+
 GetIt injection = GetIt.I;
 
 Future<void> setDi() async {
@@ -20,8 +22,17 @@ Future<void> setDi() async {
     ),
   );
 
+  final securedStorage = SecuredStorageRepositoryImpl(storage);
+
+  dio.interceptors.add(
+    MiddlewareInterceptor(
+      repository: securedStorage,
+      refreshRepository: RefreshTokenRepositoryImpl(),
+    ),
+  );
+
   injection.registerLazySingleton<SharedPreferencesRepository>(
-    () => SecuredStorageRepositoryImpl(storage),
+    () => securedStorage,
   );
 
   injection.registerLazySingleton<MediaRepository>(

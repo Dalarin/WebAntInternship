@@ -7,7 +7,7 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
   AuthenticateRepositoryImpl(Dio dio) : _dio = dio;
 
   @override
-  Future<ClientLoginEntity?> authenticateWithUsernameAndPassword({
+  Future<LoginWrapperEntity?> authenticateWithUsernameAndPassword({
     required String username,
     required String password,
   }) async {
@@ -41,17 +41,34 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
       );
 
       if (response.statusCode == 200) {
-        return ClientLoginEntity(
-          clientEntity: client,
-          loginEntity: LoginEntity.fromJson(response.data),
+        final userResponse = await _dio.get(
+          '/users',
+          queryParameters: {'limit': 15000},
         );
+
+        if (userResponse.statusCode == 200) {
+          final userEntity = PaginatedWrapperEntity<UserEntity>.fromJson(
+            userResponse.data,
+            (Object? json) {
+              return UserEntity.fromJson(
+                json as Map<String, dynamic>,
+              );
+            },
+          ).data.where((element) => element.username == username).first;
+
+          return LoginWrapperEntity(
+            clientEntity: client,
+            userEntity: userEntity,
+            loginEntity: LoginEntity.fromJson(response.data),
+          );
+        }
       }
     }
     return null;
   }
 
   @override
-  Future<RegisterUserEntity?> register({
+  Future<LoginWrapperEntity?> register({
     required String username,
     required String email,
     required String password,
@@ -82,7 +99,10 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
       );
 
       if (response.statusCode == 201) {
-        return RegisterUserEntity.fromJson(response.data);
+        return await authenticateWithUsernameAndPassword(
+          username: username,
+          password: password,
+        );
       }
     }
     return null;

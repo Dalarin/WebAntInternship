@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:webant_internship/extensions/localizations_extension.dart';
+
+import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/resources/app_enums.dart';
 import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
-import 'package:webant_internship/ui/widgets/custom_button.dart';
-import 'package:webant_internship/ui/widgets/custom_textfield.dart';
 
-import '../../navigation/app_router.dart';
+import '../../widgets/widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -110,10 +109,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (state.status == Status.success) {
       print('ok');
     }
-    if (state.status == Status.failure) {
-    }
+    if (state.status == Status.failure) {}
   }
-
 
   void _showDatePicker() async {
     DateTime? date = await showDatePicker(

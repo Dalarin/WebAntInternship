@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
 import 'package:webant_internship/ui/pages/authentication/register_screen.dart';
+import 'package:webant_internship/ui/pages/home/home_screen.dart';
+import 'package:webant_internship/ui/pages/profile/edit_profile_screen.dart';
 
-import '../../di/di.dart';
-import '../../usecases/login_usecase.dart';
-import '../../usecases/register_usecase.dart';
 import '../pages/authentication/login_screen.dart';
 
 class AppRouter {
@@ -15,19 +11,25 @@ class AppRouter {
   ) async {
     return await _pushToPage(
       context,
-      BlocProvider(
-        create: (context) => AuthenticationBloc(
-          loginUseCase: LoginUseCase(
-            repository: injection(),
-            securedStorage: injection(),
-          ),
-          registerUseCase: RegisterUseCase(
-            repository: injection(),
-            securedStorage: injection(),
-          ),
-        ),
-        child: const LoginScreen(),
-      ),
+      const LoginScreen(),
+    );
+  }
+
+  static Future<dynamic> pushToEditProfile(
+    BuildContext context,
+  ) async {
+    return await _pushToPage(
+      context,
+      const EditProfileScreen(),
+    );
+  }
+
+  static Future<dynamic> pushToHome(
+    BuildContext context,
+  ) async {
+    return await _pushAndRemoveUntil(
+      context,
+      const HomeScreen(),
     );
   }
 
@@ -36,19 +38,7 @@ class AppRouter {
   ) async {
     return await _pushToPage(
       context,
-      BlocProvider(
-        create: (context) => AuthenticationBloc(
-          loginUseCase: LoginUseCase(
-            repository: injection(),
-            securedStorage: injection(),
-          ),
-          registerUseCase: RegisterUseCase(
-            repository: injection(),
-            securedStorage: injection(),
-          ),
-        ),
-        child: const RegisterScreen(),
-      ),
+      const RegisterScreen(),
     );
   }
 

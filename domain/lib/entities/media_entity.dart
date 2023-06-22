@@ -1,3 +1,4 @@
+import 'package:domain/entities/image_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'media_entity.g.dart';
@@ -12,7 +13,7 @@ class MediaEntity with _$MediaEntity {
     @Default("") final String description,
     required final bool popular,
     @JsonKey(name: 'new') required final bool newMedia,
-    required final Map<String, dynamic> image,
+    required final ImageEntity image,
     final String? user,
   }) = _MediaEntity;
 

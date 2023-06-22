@@ -1,5 +1,7 @@
 import 'package:domain/domain.dart';
 
+import '../models/user.dart';
+
 class LoginUseCase {
   final AuthenticateRepository _repository;
   final SharedPreferencesRepository _securedStorage;
@@ -10,7 +12,7 @@ class LoginUseCase {
   })  : _repository = repository,
         _securedStorage = securedStorage;
 
-  Future<bool> authenticate({
+  Future<User?> authenticate({
     required String username,
     required String password,
   }) async {
@@ -22,9 +24,41 @@ class LoginUseCase {
     if (response != null) {
       _securedStorage.saveLoginEntity(entity: response);
 
-      return true;
+      return User.fromEntity(response.userEntity);
     }
 
-    return false;
+    return null;
+  }
+
+  Future<User?> register({
+    required String username,
+    required String email,
+    required String password,
+    DateTime? birthDate,
+  }) async {
+    final response = await _repository.register(
+      username: username,
+      email: email,
+      password: password,
+      birthDay: birthDate,
+    );
+
+    if (response != null) {
+      _securedStorage.saveLoginEntity(entity: response);
+
+      return User.fromEntity(response.userEntity);
+    }
+
+    return null;
+  }
+
+  Future<User?> verifyAuthentication() async {
+    final response = await _securedStorage.getLoginEntity();
+
+    if (response != null) {
+      return User.fromEntity(response.userEntity);
+    }
+
+    return null;
   }
 }

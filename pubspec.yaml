@@ -34,6 +34,7 @@ dependencies:
   get_it: ^7.6.0
   flutter_secure_storage: ^8.0.0
   flutter_localization: ^0.1.12
+  camera: ^0.10.5+2
 
 dependency_overrides:
   intl: ^0.18.1
@@ -52,5 +53,15 @@ flutter:
 
   assets:
     - assets/
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
+
 flutter_intl:
   enabled: true

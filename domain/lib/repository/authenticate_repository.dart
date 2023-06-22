@@ -1,15 +1,14 @@
-import 'package:domain/entities/client_login_entity_wrapper.dart';
-import 'package:domain/entities/login_entity.dart';
 
-import '../entities/register_user_entity.dart';
+
+import '../entities/client_login_entity_wrapper.dart';
 
 abstract class AuthenticateRepository {
-  Future<ClientLoginEntity?> authenticateWithUsernameAndPassword({
+  Future<LoginWrapperEntity?> authenticateWithUsernameAndPassword({
     required String username,
     required String password,
   });
 
-  Future<RegisterUserEntity?> register({
+  Future<LoginWrapperEntity?> register({
     required String username,
     required String email,
     required String password,

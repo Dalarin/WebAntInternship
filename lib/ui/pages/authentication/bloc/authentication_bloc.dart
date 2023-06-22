@@ -5,7 +5,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:webant_internship/usecases/login_usecase.dart';
 
 import '../../../../resources/resources.dart';
-import '../../../../usecases/register_usecase.dart';
 
 part 'authentication_event.dart';
 
@@ -15,16 +14,14 @@ part 'authentication_bloc.freezed.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final LoginUseCase _loginUseCase;
-  final RegisterUseCase _registerUseCase;
 
   AuthenticationBloc({
     required LoginUseCase loginUseCase,
-    required RegisterUseCase registerUseCase,
   })  : _loginUseCase = loginUseCase,
-        _registerUseCase = registerUseCase,
         super(const AuthenticationState()) {
     on<_Authenticate>(_onAuthenticate);
     on<_Register>(_onRegister);
+    on<_Started>(_onApplicationStarted);
   }
 
   FutureOr<void> _onAuthenticate(
@@ -38,7 +35,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       password: event.password,
     );
 
-    if (response == true) {
+    if (response != null) {
       return emit(state.copyWith(status: Status.success));
     }
 
@@ -51,7 +48,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   ) async {
     emit(state.copyWith(status: Status.loading));
 
-    final response = await _registerUseCase.register(
+    final response = await _loginUseCase.register(
       username: event.username,
       email: event.email,
       password: event.password,
@@ -66,6 +63,26 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
     return emit(
       state.copyWith(status: Status.success),
+    );
+  }
+
+  FutureOr<void> _onApplicationStarted(
+    _Started event,
+    Emitter<AuthenticationState> emit,
+  ) async {
+    emit(state.copyWith(status: Status.loading));
+    final response = await _loginUseCase.verifyAuthentication();
+
+    if (response != null) {
+      return emit(
+        state.copyWith(
+          status: Status.success,
+        ),
+      );
+    }
+
+    return emit(
+      state.copyWith(status: Status.initial),
     );
   }
 }

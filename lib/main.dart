@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webant_internship/di/di.dart';
 import 'package:webant_internship/resources/resources.dart';
-import 'package:webant_internship/ui/pages/onboarding/onboarding_screen.dart';
+import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
+import 'package:webant_internship/ui/pages/camera/camera_screen.dart';
+import 'package:webant_internship/ui/pages/home/bloc/image_bloc.dart';
+import 'package:webant_internship/ui/pages/home/home_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:webant_internship/ui/pages/image/image_screen.dart';
+import 'package:webant_internship/ui/pages/image/upload_image_screen.dart';
+import 'package:webant_internship/ui/widgets/custom_scaffold.dart';
+import 'package:webant_internship/usecases/login_usecase.dart';
 
 import 'generated/l10n.dart';
 
@@ -18,16 +26,28 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.theme,
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(
+          create: (context) => AuthenticationBloc(
+            loginUseCase: LoginUseCase(
+              repository: injection(),
+              securedStorage: injection(),
+            ),
+          )..add(const AuthenticationEvent.started()),
+        ),
       ],
-      supportedLocales: S.delegate.supportedLocales,
-      home: const OnBoardingScreen(),
+      child: MaterialApp(
+        theme: AppTheme.theme,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: const CameraScreen(),
+      ),
     );
   }
 }

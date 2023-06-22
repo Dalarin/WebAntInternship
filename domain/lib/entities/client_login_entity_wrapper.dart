@@ -6,12 +6,13 @@ part 'client_login_entity_wrapper.g.dart';
 part 'client_login_entity_wrapper.freezed.dart';
 
 @freezed
-class ClientLoginEntity with _$ClientLoginEntity {
-  const factory ClientLoginEntity({
+class LoginWrapperEntity with _$LoginWrapperEntity {
+  const factory LoginWrapperEntity({
     required ClientEntity clientEntity,
     required LoginEntity loginEntity,
-  }) = _ClientLoginEntity;
+    required UserEntity userEntity,
+  }) = _LoginWrapperEntity;
 
-  factory ClientLoginEntity.fromJson(Map<String, dynamic> json) =>
-      _$ClientLoginEntityFromJson(json);
+  factory LoginWrapperEntity.fromJson(Map<String, dynamic> json) =>
+      _$LoginWrapperEntityFromJson(json);
 }
