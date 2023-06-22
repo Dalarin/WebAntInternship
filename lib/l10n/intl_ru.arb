@@ -35,5 +35,7 @@
   "signOut": "Sign Out",
   "youCan": "You can ",
   "accountSettings": "Account settings",
-  "save": "Save"
+  "save": "Save",
+  "serverUnavailable": "Сервер недоступен",
+  "somethingWentWrong": "Что-то пошло не так"
 }

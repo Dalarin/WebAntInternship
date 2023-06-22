@@ -63,15 +63,23 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
         ),
       );
     } on BaseException catch (exception) {
+      String message;
+
       if (exception is NoInternetConnection) {
-        return emit(
-          state.copyWith(
-            status: Status.failure,
-            errorEnum: ErrorEnum.ethernet,
-            error: _appLocalization.noEthernetError,
-          ),
-        );
+        message = _appLocalization.noEthernetError;
+      } else if (exception is ServerUnavailable) {
+        message = _appLocalization.serverUnavailable;
+      } else {
+        message = _appLocalization.somethingWentWrong;
       }
+
+      return emit(
+        state.copyWith(
+          status: Status.failure,
+          errorEnum: ErrorEnum.ethernet,
+          error: message,
+        ),
+      );
     }
   }
 }

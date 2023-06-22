@@ -43,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
     return BlocProvider(
       create: (context) => ImageBloc(
-        imagesUseCase: GetImagesUseCase(repository: injection()),
+        imagesUseCase: GetImagesUseCase(
+          repository: injection(),
+        ),
         localization: localization,
       )..add(const ImageEvent.getImages()),
       child: Scaffold(

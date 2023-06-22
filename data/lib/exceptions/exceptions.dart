@@ -76,3 +76,4 @@ class UnknownError extends BaseException {
     required RequestOptions requestOptions,
   }) : super(requestOptions);
 }
+

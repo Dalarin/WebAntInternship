@@ -3,12 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webant_internship/di/di.dart';
 import 'package:webant_internship/resources/resources.dart';
 import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
-import 'package:webant_internship/ui/pages/camera/camera_screen.dart';
-import 'package:webant_internship/ui/pages/home/bloc/image_bloc.dart';
-import 'package:webant_internship/ui/pages/home/home_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:webant_internship/ui/pages/image/image_screen.dart';
-import 'package:webant_internship/ui/pages/image/upload_image_screen.dart';
 import 'package:webant_internship/ui/widgets/custom_scaffold.dart';
 import 'package:webant_internship/usecases/login_usecase.dart';
 
@@ -46,7 +41,7 @@ class Application extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        home: const CameraScreen(),
+        home: const CustomScaffold(),
       ),
     );
   }
