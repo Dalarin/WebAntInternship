@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webant_internship/ui/pages/authentication/register_screen.dart';
 import 'package:webant_internship/ui/pages/home/home_screen.dart';
+import 'package:webant_internship/ui/pages/onboarding/onboarding_screen.dart';
 import 'package:webant_internship/ui/pages/profile/edit_profile_screen.dart';
 
 import '../pages/authentication/login_screen.dart';
@@ -12,6 +13,14 @@ class AppRouter {
     return await _pushAndRemoveUntil(
       context,
       const LoginScreen(),
+    );
+  }
+  static Future<dynamic> pushToOnBoarding(
+    BuildContext context,
+  ) async {
+    return await _pushAndRemoveUntil(
+      context,
+      const OnBoardingScreen(),
     );
   }
 

@@ -117,6 +117,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _authorizationListener(BuildContext context, AuthenticationState state) {
+
+
+    AppMessenger.of(context).showLoadingMenu();
+
     if (state.status == Status.success) {
       AppRouter.pushToHome(context);
     }

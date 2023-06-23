@@ -16,9 +16,9 @@ class SplashScreen extends StatelessWidget {
           if (state.status == Status.success) {
             AppRouter.pushToHome(context);
           } else if (state.status == Status.initial) {
-            AppRouter.pushToAuthentication(context);
+            AppRouter.pushToOnBoarding(context);
           } else if (state.status == Status.failure) {
-            AppRouter.pushToAuthentication(context);
+            AppRouter.pushToOnBoarding(context);
           }
         },
         child: SafeArea(

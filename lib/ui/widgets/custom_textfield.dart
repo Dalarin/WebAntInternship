@@ -40,8 +40,7 @@ class CustomTextField extends StatelessWidget {
           if (text == null || text.isEmpty) {
             return context.localizations.fillField(hint);
           }
-          validator?.call(text);
-          return null;
+          return validator?.call(text);
         },
         controller: controller,
         decoration: InputDecoration(
