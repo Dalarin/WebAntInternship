@@ -6,7 +6,6 @@ class ImageState with _$ImageState {
     @Default(Status.initial) Status status,
     @Default([]) List<Media> media,
     @Default(false) bool hasReachedMax,
-    @Default(ErrorEnum.internal) ErrorEnum errorEnum,
-    @Default('Произошла непредвиденная ошибка') String error,
+    @Default(ErrorEnum.unknown) ErrorEnum errorEnum,
   }) = _ImageState;
 }

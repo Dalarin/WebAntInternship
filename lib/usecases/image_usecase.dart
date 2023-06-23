@@ -1,10 +1,10 @@
 import 'package:domain/domain.dart';
 import 'package:webant_internship/models/media.dart';
 
-class GetImagesUseCase {
+class ImageUseCase {
   final MediaRepository _repository;
 
-  GetImagesUseCase({required MediaRepository repository}) : _repository = repository;
+  ImageUseCase({required MediaRepository repository}) : _repository = repository;
 
   Future<List<Media>?> getImages({
     bool popular = false,

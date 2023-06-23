@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:data/data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/usecases/login_usecase.dart';
 
 import '../../../../resources/resources.dart';
@@ -29,18 +30,31 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     _Authenticate event,
     Emitter<AuthenticationState> emit,
   ) async {
-    emit(state.copyWith(status: Status.loading));
+    try {
+      emit(state.copyWith(status: Status.loading));
 
-    final response = await _loginUseCase.authenticate(
-      username: event.email,
-      password: event.password,
-    );
+      final response = await _loginUseCase.authenticate(
+        username: event.email,
+        password: event.password,
+      );
 
-    if (response != null) {
-      return emit(state.copyWith(status: Status.success));
+      if (response != null) {
+        return emit(state.copyWith(status: Status.success));
+      }
+
+      return emit(state.copyWith(status: Status.failure));
+    } on BaseException catch (exception) {
+      return emit(
+        state.copyWith(
+          status: Status.failure,
+          errorEnum: exception.errorEnum,
+        ),
+      );
+    } catch (_) {
+      return emit(
+        state.copyWith(status: Status.failure),
+      );
     }
-
-    return emit(state.copyWith(status: Status.failure));
   }
 
   FutureOr<void> _onRegister(
@@ -67,21 +81,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         state.copyWith(status: Status.success),
       );
     } on BaseException catch (exception) {
-      String message;
-
-      if (exception is NoInternetConnection) {
-        message = 'Отсутствует интернет соединение';
-      } else if (exception is ServerUnavailable) {
-        message = 'Сервер недоступен';
-      } else {
-        message = 'Что-то пошло не так';
-      }
-
       return emit(
-        state.copyWith(
-          status: Status.failure,
-          error: message,
-        ),
+        state.copyWith(status: Status.failure, errorEnum: exception.errorEnum),
       );
     }
   }

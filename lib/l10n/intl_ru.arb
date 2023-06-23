@@ -40,5 +40,17 @@
   "somethingWentWrong": "Что-то пошло не так",
   "upload": "Upload",
   "name": "Name",
-  "description": "Description"
+  "description": "Description",
+  "badRequest": "Неправильный запрос",
+  "forbidden": "Доступ запрещен",
+  "notFound": "Ссылка не найдена",
+  "conflict": "Произошёл конфликт",
+  "unathorized": "Пользователь не авторизован",
+  "duplicate": "Дубликат",
+  "timeOut": "Долгое время запроса",
+  "passwordMissmatch": "Пароли не совпадают",
+  "photo": "Фото",
+  "gallery": "Галерея",
+  "delete": "Удалить",
+  "acceptPermissions": "Ошибка! Предоставьте разрешения"
 }

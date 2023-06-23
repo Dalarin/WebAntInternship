@@ -1,8 +1,6 @@
 import 'package:domain/entities/image_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'image.g.dart';
-
 part 'image.freezed.dart';
 
 @freezed
@@ -15,6 +13,4 @@ class Image with _$Image {
   factory Image.fromEntity(ImageEntity entity) {
     return Image(id: entity.id, name: entity.name);
   }
-
-  factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
 }

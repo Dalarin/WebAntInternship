@@ -19,6 +19,7 @@ class AppMessenger {
 
     showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return const AlertDialog(
           surfaceTintColor: Colors.transparent,
@@ -30,24 +31,26 @@ class AppMessenger {
   }
 
   void showSnackBar(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: AppColors.titleColor,
-        content: Row(
-          children: [
-            const Icon(
-              Icons.info_outline_rounded,
-              color: Colors.white,
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Text(
-              text,
-            ),
-          ],
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          backgroundColor: AppColors.titleColor,
+          content: Row(
+            children: [
+              const Icon(
+                Icons.info_outline_rounded,
+                color: Colors.white,
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              Text(
+                text,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 }

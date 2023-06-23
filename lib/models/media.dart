@@ -2,8 +2,6 @@ import 'package:domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:webant_internship/models/image.dart';
 
-part 'media.g.dart';
-
 part 'media.freezed.dart';
 
 @freezed
@@ -28,6 +26,4 @@ class Media with _$Media {
       image: Image.fromEntity(entity.image),
     );
   }
-
-  factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);
 }

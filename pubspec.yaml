@@ -35,6 +35,9 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   flutter_localization: ^0.1.12
   camera: ^0.10.5+2
+  image_picker_plus: ^0.5.6+2
+  path_provider: ^2.0.15
+  permission_handler: ^10.3.0
 
 dependency_overrides:
   intl: ^0.18.1

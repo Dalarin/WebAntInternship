@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:data/data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/resources/app_enums.dart';
 
 import '../../../../generated/l10n.dart';
 import '../../../../models/media.dart';
-import '../../../../usecases/get_images_usecase.dart';
+import '../../../../usecases/image_usecase.dart';
 
 part 'image_event.dart';
 
@@ -16,11 +17,11 @@ part 'image_state.dart';
 part 'image_bloc.freezed.dart';
 
 class ImageBloc extends Bloc<ImageEvent, ImageState> {
-  final GetImagesUseCase _imageUseCase;
+  final ImageUseCase _imageUseCase;
   final S _appLocalization;
 
   ImageBloc({
-    required GetImagesUseCase imagesUseCase,
+    required ImageUseCase imagesUseCase,
     required S localization,
   })  : _imageUseCase = imagesUseCase,
         _appLocalization = localization,
@@ -63,21 +64,10 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
         ),
       );
     } on BaseException catch (exception) {
-      String message;
-
-      if (exception is NoInternetConnection) {
-        message = _appLocalization.noEthernetError;
-      } else if (exception is ServerUnavailable) {
-        message = _appLocalization.serverUnavailable;
-      } else {
-        message = _appLocalization.somethingWentWrong;
-      }
-
       return emit(
         state.copyWith(
           status: Status.failure,
-          errorEnum: ErrorEnum.ethernet,
-          error: message,
+          errorEnum: exception.errorEnum,
         ),
       );
     }

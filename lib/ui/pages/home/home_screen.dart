@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webant_internship/di/di.dart';
+import 'package:webant_internship/extensions/error_enum_extension.dart';
 import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/resources/resources.dart';
 import 'package:webant_internship/ui/widgets/widgets.dart';
-import 'package:webant_internship/usecases/get_images_usecase.dart';
+import 'package:webant_internship/usecases/image_usecase.dart';
 
 import 'bloc/image_bloc.dart';
 
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
     return BlocProvider(
       create: (context) => ImageBloc(
-        imagesUseCase: GetImagesUseCase(
+        imagesUseCase: ImageUseCase(
           repository: injection(),
         ),
         localization: localization,
@@ -98,7 +99,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         }
 
                         if (state.status == Status.failure) {
-                          return CustomError(message: state.error);
+                          return CustomError(
+                            message: state.errorEnum.message(context.localizations),
+                          );
                         }
 
                         return ImageList(media: state.media);

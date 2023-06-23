@@ -4,6 +4,6 @@ part of 'camera_bloc.dart';
 class CameraState with _$CameraState {
   const factory CameraState({
     @Default(Status.initial) Status status,
-    CameraController? controller,
+    File? selectedPicture,
   }) = _CameraState;
 }

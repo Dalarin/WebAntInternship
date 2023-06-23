@@ -1,9 +1,12 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dalarin.webant_internship">
    <application
         android:label="webant_internship"
         android:name="${applicationName}"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -31,4 +34,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-</manifest>
+        <uses-permission android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    </manifest>
