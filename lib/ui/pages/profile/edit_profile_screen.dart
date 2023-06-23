@@ -1,10 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:webant_internship/extensions/extensions.dart';
-import 'package:webant_internship/ui/widgets/custom_button.dart';
-import 'package:webant_internship/ui/widgets/custom_textfield.dart';
 
 import '../../../resources/resources.dart';
+import '../../widgets/widgets.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

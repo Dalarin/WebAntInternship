@@ -3,7 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/resources/resources.dart';
 import 'package:webant_internship/ui/navigation/app_router.dart';
-import 'package:webant_internship/ui/widgets/custom_button.dart';
+
+import '../../widgets/widgets.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:webant_internship/extensions/extensions.dart';
-import 'package:webant_internship/resources/resources.dart';
-import 'package:webant_internship/ui/widgets/custom_image.dart';
-import 'package:webant_internship/ui/widgets/custom_textfield.dart';
+
+import '../../widgets/widgets.dart';
 
 class UploadImageScreen extends StatelessWidget {
   const UploadImageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = context.screenSize;
     final localization = context.localizations;
-    final textTheme = context.textTheme;
 
     return Scaffold(
       appBar: AppBar(),
@@ -42,6 +39,12 @@ class UploadImageScreen extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            CustomButton(
+              buttonText: localization.upload,
+              buttonColor: Colors.black,
+              style: const TextStyle(color: Colors.white),
+              callback: () {},
             ),
           ],
         ),

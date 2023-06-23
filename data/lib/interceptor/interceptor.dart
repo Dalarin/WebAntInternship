@@ -50,6 +50,23 @@ class MiddlewareInterceptor implements Interceptor {
             loginEntity: tokenResponse,
           ),
         );
+
+        options.headers = {'Authorization': 'Bearer ${tokenResponse.refreshToken}'};
+
+        final newRequest = await Dio().request(
+          options.path,
+          data: options.data,
+          queryParameters: options.queryParameters,
+          cancelToken: options.cancelToken,
+          onReceiveProgress: options.onReceiveProgress,
+          onSendProgress: options.onSendProgress,
+        );
+
+        if (newRequest != null) {
+          return handler.resolve(newRequest);
+        }
+
+        return handler.reject(Unauthorized(requestOptions: options));
       } else {
         handler.reject(Unauthorized(requestOptions: options));
       }

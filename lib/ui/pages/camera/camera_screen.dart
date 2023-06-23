@@ -2,8 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:webant_internship/resources/app_enums.dart';
 
+import '../../../resources/resources.dart';
 import 'bloc/camera_bloc.dart';
 
 class CameraScreen extends StatefulWidget {

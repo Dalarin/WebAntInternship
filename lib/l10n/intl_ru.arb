@@ -37,5 +37,6 @@
   "accountSettings": "Account settings",
   "save": "Save",
   "serverUnavailable": "Сервер недоступен",
-  "somethingWentWrong": "Что-то пошло не так"
+  "somethingWentWrong": "Что-то пошло не так",
+  "upload": "Upload"
 }

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:webant_internship/extensions/build_context_extension.dart';
 import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/resources/resources.dart';
 import 'package:webant_internship/ui/widgets/custom_image.dart';
 
+import '../../../models/media.dart';
+
 class ImageScreen extends StatelessWidget {
-  const ImageScreen({super.key});
+  final Media media;
+
+  const ImageScreen({super.key, required this.media});
 
   @override
   Widget build(BuildContext context) {
-    final size = context.screenSize;
-    final localization = context.localizations;
     final textTheme = context.textTheme;
 
     return Scaffold(
@@ -19,9 +20,8 @@ class ImageScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              'https://img.freepik.com/free-photo/abstract-colorful-splash-3d-background-generative-ai-background_60438-2509.jpg',
-              width: double.infinity,
+            CustomImage(
+              media: media,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -32,7 +32,7 @@ class ImageScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Get better - unused exploration',
+                    media.name,
                     style: textTheme.headlineMedium?.copyWith(
                       color: AppColors.titleColor,
                     ),
@@ -41,7 +41,7 @@ class ImageScreen extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    'Username',
+                    media.user ?? 'User',
                     style: textTheme.titleMedium?.copyWith(
                       color: AppColors.primaryColor,
                     ),
@@ -50,15 +50,14 @@ class ImageScreen extends StatelessWidget {
                     height: 15,
                   ),
                   Text(
-                    'Initial design explorations for a online health and wellness platform that unfortunately never made it into the product.'
-                        ' Though this was unused work, Have been contemplating on creating a few more of them.',
+                    media.image?.name ?? 'Media description',
                     style: textTheme.bodyLarge,
                   ),
                   const SizedBox(
                     height: 15,
                   ),
                   Text(
-                    '12 dec. 2020',
+                    media.creationDate.toString(),
                     style: textTheme.bodyLarge?.copyWith(
                       color: AppColors.inactiveColor,
                     ),

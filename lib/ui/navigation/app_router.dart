@@ -9,7 +9,7 @@ class AppRouter {
   static Future<dynamic> pushToAuthentication(
     BuildContext context,
   ) async {
-    return await _pushToPage(
+    return await _pushAndRemoveUntil(
       context,
       const LoginScreen(),
     );
