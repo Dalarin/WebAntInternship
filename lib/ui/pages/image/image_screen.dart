@@ -56,6 +56,19 @@ class ImageScreen extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
+                  Wrap(
+                    children: ['Animals', 'Humans', 'Popular'].map<Chip>(
+                      (tag) {
+                        return Chip(
+                          label: Text(tag),
+                          backgroundColor: AppColors.primaryColor,
+                        );
+                      },
+                    ).toList(),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   Text(
                     media.creationDate.toString(),
                     style: textTheme.bodyLarge?.copyWith(

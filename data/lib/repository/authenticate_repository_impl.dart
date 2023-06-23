@@ -75,30 +75,30 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
     DateTime? birthDay,
   }) async {
     // Create token
-    final tokenResponse = await _dio.post(
-      '/clients',
-      data: {
-        'name': username,
-        "allowedGrantTypes": [
-          "password",
-          "refresh_token",
-        ]
-      },
-    );
 
     // Register
-    if (tokenResponse.statusCode == 201) {
-      final response = await _dio.post(
-        '/users',
+    final response = await _dio.post(
+      '/users',
+      data: {
+        'email': email,
+        'username': username,
+        'password': password,
+        'birthday': birthDay?.toIso8601String(),
+      },
+    );
+    if (response.statusCode == 201) {
+      final tokenResponse = await _dio.post(
+        '/clients',
         data: {
-          'email': email,
-          'username': username,
-          'password': password,
-          'birthday': birthDay?.toIso8601String(),
+          'name': username,
+          "allowedGrantTypes": [
+            "password",
+            "refresh_token",
+          ]
         },
       );
 
-      if (response.statusCode == 201) {
+      if (tokenResponse.statusCode == 201) {
         return await authenticateWithUsernameAndPassword(
           username: username,
           password: password,

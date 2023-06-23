@@ -38,5 +38,7 @@
   "save": "Save",
   "serverUnavailable": "Сервер недоступен",
   "somethingWentWrong": "Что-то пошло не так",
-  "upload": "Upload"
+  "upload": "Upload",
+  "name": "Name",
+  "description": "Description"
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:data/data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:webant_internship/usecases/login_usecase.dart';
@@ -46,24 +47,43 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     _Register event,
     Emitter<AuthenticationState> emit,
   ) async {
-    emit(state.copyWith(status: Status.loading));
+    try {
+      emit(state.copyWith(status: Status.loading));
 
-    final response = await _loginUseCase.register(
-      username: event.username,
-      email: event.email,
-      password: event.password,
-      birthDate: event.birthDate,
-    );
+      final response = await _loginUseCase.register(
+        username: event.username,
+        email: event.email,
+        password: event.password,
+        birthDate: event.birthDate,
+      );
 
-    if (response != null) {
+      if (response != null) {
+        return emit(
+          state.copyWith(status: Status.success),
+        );
+      }
+
       return emit(
         state.copyWith(status: Status.success),
       );
-    }
+    } on BaseException catch (exception) {
+      String message;
 
-    return emit(
-      state.copyWith(status: Status.success),
-    );
+      if (exception is NoInternetConnection) {
+        message = 'Отсутствует интернет соединение';
+      } else if (exception is ServerUnavailable) {
+        message = 'Сервер недоступен';
+      } else {
+        message = 'Что-то пошло не так';
+      }
+
+      return emit(
+        state.copyWith(
+          status: Status.failure,
+          error: message,
+        ),
+      );
+    }
   }
 
   FutureOr<void> _onApplicationStarted(

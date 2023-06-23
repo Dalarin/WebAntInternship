@@ -36,10 +36,11 @@ class CustomTextField extends StatelessWidget {
         onChanged: onChange,
         validator: (String? text) {
           if (!required) return null;
-          validator?.call(text);
+
           if (text == null || text.isEmpty) {
             return context.localizations.fillField(hint);
           }
+          validator?.call(text);
           return null;
         },
         controller: controller,

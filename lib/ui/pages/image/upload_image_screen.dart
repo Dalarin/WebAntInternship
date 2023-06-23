@@ -3,8 +3,17 @@ import 'package:webant_internship/extensions/extensions.dart';
 
 import '../../widgets/widgets.dart';
 
-class UploadImageScreen extends StatelessWidget {
+class UploadImageScreen extends StatefulWidget {
   const UploadImageScreen({super.key});
+
+  @override
+  State<UploadImageScreen> createState() => _UploadImageScreenState();
+}
+
+class _UploadImageScreenState extends State<UploadImageScreen> {
+
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +38,13 @@ class UploadImageScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomTextField(
-                    hint: 'Name',
-                    controller: TextEditingController(),
+                    hint: localization.name,
+                    controller: _nameController,
                   ),
                   CustomTextField(
-                    hint: 'Name',
+                    hint: localization.description,
                     maxLines: 6,
-                    controller: TextEditingController(),
+                    controller: _descriptionController,
                   ),
                 ],
               ),

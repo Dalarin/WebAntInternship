@@ -4,8 +4,10 @@ import 'package:intl/intl.dart';
 
 import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/resources/app_enums.dart';
+import 'package:webant_internship/ui/navigation/app_router.dart';
 import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
 
+import '../../../resources/resources.dart';
 import '../../widgets/widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -64,10 +66,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: _emailController,
                     ),
                     CustomTextField(
+                      validator: _validatePasswordIdentity,
                       hint: localization.passwordRequired,
                       controller: _passwordController,
                     ),
                     CustomTextField(
+                      validator: _validatePasswordIdentity,
                       hint: localization.confirmPasswordRequired,
                       controller: _repeatPasswordController,
                     ),
@@ -105,11 +109,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  String? _validatePasswordIdentity(String? value) {
+    if (_passwordController.text != _repeatPasswordController.text) {
+      return 'Пароли не совпадают';
+    }
+    return null;
+  }
+
   void _authorizationListener(BuildContext context, AuthenticationState state) {
     if (state.status == Status.success) {
-      print('ok');
+      AppRouter.pushToHome(context);
     }
-    if (state.status == Status.failure) {}
+    if (state.status == Status.failure) {
+      AppMessenger.of(context).showSnackBar(state.error);
+    }
   }
 
   void _showDatePicker() async {
