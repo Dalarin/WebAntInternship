@@ -1,12 +1,15 @@
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionHelper {
-  static Future<bool> requestPermissions() async {
-    await [Permission.camera, Permission.mediaLibrary].request();
+  static Future<bool> requestCameraPermission() async {
+    await Permission.camera.request();
 
-    final cameraPermission = await Permission.camera.isGranted;
-    final mediaLibraryPermission = await Permission.mediaLibrary.isGranted;
+    return await Permission.camera.isGranted;
+  }
 
-    return cameraPermission && mediaLibraryPermission;
+  static Future<bool> requestMediaPermission() async {
+    await Permission.mediaLibrary.request();
+
+    return await Permission.mediaLibrary.isGranted;
   }
 }

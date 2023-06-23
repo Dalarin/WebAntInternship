@@ -5,3 +5,4 @@ export 'custom_loader.dart';
 export 'custom_scaffold.dart';
 export 'custom_error.dart';
 export 'image_list.dart';
+export 'input_chip.dart';

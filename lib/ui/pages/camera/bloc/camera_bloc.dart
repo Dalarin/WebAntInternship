@@ -26,7 +26,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     Emitter<CameraState> emit,
   ) async {
     try {
-      if (await PermissionHelper.requestPermissions()) {
+      if (await PermissionHelper.requestCameraPermission()) {
         emit(state.copyWith(status: Status.loading));
 
         final picture = await CameraHelper.takePictures();

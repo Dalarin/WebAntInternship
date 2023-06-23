@@ -68,14 +68,37 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
                       controller: _descriptionController,
                     ),
                     Wrap(
-                      children: ['Map'].map<Chip>(
-                        (tag) {
-                          return Chip(
-                            label: Text(tag),
-                            backgroundColor: AppColors.primaryColor,
-                          );
-                        },
-                      ).toList(),
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 15,
+                      children: [
+                        Transform.scale(
+                          scale: 1.1,
+                          child: InputChip(
+                            onDeleted: () {},
+                            label: const Text('Animals'),
+                            padding: EdgeInsets.zero,
+                            deleteIcon: const Icon(Icons.close),
+                          ),
+                        ),
+                        const TextFieldChip(),
+                        Transform.scale(
+                          scale: 1.1,
+                          child: InputChip(
+                            onDeleted: () {},
+                            padding: EdgeInsets.zero,
+                            label: const Text('Add tag'),
+                            deleteIcon: const Icon(Icons.add),
+                            backgroundColor: Colors.transparent,
+                            deleteIconColor: AppColors.primaryColor,
+                            labelStyle: const TextStyle(
+                              color: AppColors.primaryColor,
+                            ),
+                            side: const BorderSide(
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     CustomButton(
                       buttonText: localization.upload,
