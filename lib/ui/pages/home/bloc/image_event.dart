@@ -9,4 +9,14 @@ class ImageEvent with _$ImageEvent {
     @Default(true) bool isNewRequest,
     @Default('') String query,
   }) = _GetImages;
+
+  const factory ImageEvent.getImagesForCurrentUser({
+    @Default(true) bool isNewRequest,
+  }) = _GetImagesForCurrentUser;
+
+  const factory ImageEvent.uploadImage({
+    required String title,
+    required String description,
+    required File file,
+  }) = _UploadImage;
 }

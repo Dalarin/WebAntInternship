@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:data/data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,15 +19,14 @@ part 'image_bloc.freezed.dart';
 
 class ImageBloc extends Bloc<ImageEvent, ImageState> {
   final ImageUseCase _imageUseCase;
-  final S _appLocalization;
 
   ImageBloc({
     required ImageUseCase imagesUseCase,
-    required S localization,
   })  : _imageUseCase = imagesUseCase,
-        _appLocalization = localization,
         super(const ImageState()) {
     on<_GetImages>(_onGetImages);
+    on<_UploadImage>(_onUploadImage);
+    on<_GetImagesForCurrentUser>(_onGetImagesByUserId);
   }
 
   FutureOr<void> _onGetImages(
@@ -34,7 +34,7 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
     Emitter<ImageState> emit,
   ) async {
     try {
-      if (state.hasReachedMax && !event.isSearching) {
+      if (state.hasReachedMax && !event.isSearching && !event.isNewRequest) {
         return;
       }
       emit(state.copyWith(status: Status.loading));
@@ -43,6 +43,7 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
 
       page = event.isSearching ? 1 : page;
 
+      ;
       final response = await _imageUseCase.getImages(
         newMedia: event.isNewMedia,
         popular: event.isPopular,
@@ -50,10 +51,13 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
       );
 
       if (response != null) {
+        final images = event.isNewRequest ? response : [...state.media, ...response];
+
         return emit(
           state.copyWith(
-            media: response,
+            media: images,
             status: Status.success,
+            hasReachedMax: response.isEmpty,
           ),
         );
       }
@@ -71,5 +75,73 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
         ),
       );
     }
+  }
+
+  FutureOr<void> _onGetImagesByUserId(
+    _GetImagesForCurrentUser event,
+    Emitter<ImageState> emit,
+  ) async {
+    try {
+      if (state.hasReachedMax) return;
+
+      int page = (state.media.length ~/ 10) + 1;
+
+      final response = await _imageUseCase.getImagesForCurrentUser(
+        page: page,
+      );
+
+      if (response != null) {
+        final images = event.isNewRequest ? response : [...state.media, ...response];
+
+        return emit(
+          state.copyWith(
+            media: images,
+            status: Status.success,
+            hasReachedMax: response.isEmpty,
+          ),
+        );
+      }
+
+      return emit(
+        state.copyWith(
+          status: Status.failure,
+        ),
+      );
+    } on BaseException catch (exception) {
+      return emit(
+        state.copyWith(
+          status: Status.failure,
+          errorEnum: exception.errorEnum,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _onUploadImage(
+    _UploadImage event,
+    Emitter<ImageState> emit,
+  ) async {
+    emit(state.copyWith(status: Status.loading));
+
+    final image = await _imageUseCase.uploadImage(
+      title: event.title,
+      filePath: event.file.path,
+      description: event.description,
+    );
+
+    if (image != null) {
+      return emit(
+        state.copyWith(
+          status: Status.success,
+          media: [image, ...state.media],
+        ),
+      );
+    }
+
+    return emit(
+      state.copyWith(
+        status: Status.failure,
+      ),
+    );
   }
 }

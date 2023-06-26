@@ -14,17 +14,21 @@ class MiddlewareInterceptor implements Interceptor {
         _refreshRepository = refreshRepository;
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
+    print(err.response?.statusCode);
+
+    print(err.response?.data);
+
     switch (err.response?.statusCode) {
       case 400:
         handler.reject(BadRequest(requestOptions: err.requestOptions));
         break;
-      case 404:
-        handler.reject(NotFound(requestOptions: err.requestOptions));
-        break;
       case 401:
       case 403:
-        _refreshToken(err.requestOptions, handler);
+        await _refreshToken(err.requestOptions, handler);
+        break;
+      case 404:
+        handler.reject(NotFound(requestOptions: err.requestOptions));
         break;
       case 500:
       case 502:
@@ -38,11 +42,15 @@ class MiddlewareInterceptor implements Interceptor {
     }
   }
 
-  void _refreshToken(RequestOptions options, ErrorInterceptorHandler handler) async {
+  Future<void> _refreshToken(RequestOptions options, ErrorInterceptorHandler handler) async {
     final response = await _repository.getLoginEntity();
+
+    print(response);
 
     if (response != null) {
       final tokenResponse = await _refreshRepository.refreshToken(entity: response);
+
+      print('Refresh token : $tokenResponse');
 
       if (tokenResponse != null) {
         _repository.saveLoginEntity(
@@ -54,7 +62,7 @@ class MiddlewareInterceptor implements Interceptor {
         options.headers = {'Authorization': 'Bearer ${tokenResponse.refreshToken}'};
 
         final newRequest = await Dio().request(
-          options.path,
+          '${options.baseUrl}${options.path}',
           data: options.data,
           queryParameters: options.queryParameters,
           cancelToken: options.cancelToken,

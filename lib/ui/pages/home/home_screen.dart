@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:webant_internship/di/di.dart';
-import 'package:webant_internship/extensions/error_enum_extension.dart';
 import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/resources/resources.dart';
 import 'package:webant_internship/ui/widgets/widgets.dart';
-import 'package:webant_internship/usecases/image_usecase.dart';
 
 import 'bloc/image_bloc.dart';
 
@@ -26,6 +22,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(_tabListener);
+    _controller.addListener(_scrollListener);
+
     super.initState();
   }
 
@@ -36,81 +35,112 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.dispose();
   }
 
+  void _scrollListener() {
+    if (_controller.offset == _controller.position.maxScrollExtent) {
+      final bloc = context.read<ImageBloc>();
+      if (bloc.state.status != Status.loading) {
+        final bloc = context.read<ImageBloc>();
+        bloc.add(
+          ImageEvent.getImages(
+            isNewRequest: false,
+            isPopular: _currentTabIndex == 1,
+            isNewMedia: _currentTabIndex == 0,
+          ),
+        );
+      }
+    }
+  }
+
+  void _tabListener() {
+    _currentTabIndex = _tabController.index;
+    final bloc = context.read<ImageBloc>();
+
+
+    if (bloc.state.status != Status.loading) {
+      bloc.add(
+        ImageEvent.getImages(
+          isPopular: _currentTabIndex == 1,
+          isNewMedia: _currentTabIndex == 0,
+          isNewRequest: true,
+        ),
+      );
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final localization = context.localizations;
     final textTheme = context.textTheme;
     final size = context.screenSize;
 
-    return BlocProvider(
-      create: (context) => ImageBloc(
-        imagesUseCase: ImageUseCase(
-          repository: injection(),
-        ),
-        localization: localization,
-      )..add(const ImageEvent.getImages()),
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(size.height * 0.18),
-          child: AppBar(
-            flexibleSpace: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15.0,
-                vertical: 40,
-              ),
-              child: CustomTextField(
-                controller: TextEditingController(),
-                hint: localization.search,
-                suffixIcon: const Icon(
-                  Icons.search,
-                  color: AppColors.primaryColor,
-                ),
-              ),
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.18),
+        child: AppBar(
+          scrolledUnderElevation: 0.0,
+          flexibleSpace: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15.0,
+              vertical: 40,
             ),
-            bottom: TabBar(
-              controller: _tabController,
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelColor: Colors.black,
-              unselectedLabelColor: AppColors.inactiveColor,
-              labelStyle: textTheme.headlineSmall,
-              tabs: [
-                Tab(text: localization.newMedia),
-                Tab(text: localization.popular),
-              ],
+            child: CustomTextField(
+              controller: TextEditingController(),
+              hint: localization.search,
+              suffixIcon: const Icon(
+                Icons.search,
+                color: AppColors.primaryColor,
+              ),
             ),
           ),
-        ),
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              CupertinoSliverRefreshControl(
-                onRefresh: () async {},
-              ),
-              SliverFillRemaining(
-                child: Center(
-                  child: SingleChildScrollView(
-                    controller: _controller,
-                    child: BlocBuilder<ImageBloc, ImageState>(
-                      builder: (context, state) {
-                        if (state.status == Status.loading) {
-                          return const CustomLoader(
-                            radius: 40,
-                          );
-                        }
-
-                        if (state.status == Status.failure) {
-                          return CustomError(
-                            message: state.errorEnum.message(context.localizations),
-                          );
-                        }
-
-                        return ImageList(media: state.media);
-                      },
-                    ),
-                  ),
-                ),
-              ),
+          bottom: TabBar(
+            controller: _tabController,
+            indicatorSize: TabBarIndicatorSize.tab,
+            labelColor: Colors.black,
+            unselectedLabelColor: AppColors.inactiveColor,
+            labelStyle: textTheme.headlineSmall,
+            tabs: [
+              Tab(text: localization.newMedia),
+              Tab(text: localization.popular),
             ],
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: RefreshIndicator(
+            onRefresh: () async {
+              _tabListener();
+            },
+            child: SingleChildScrollView(
+              controller: _controller,
+              child: BlocBuilder<ImageBloc, ImageState>(
+                builder: (context, state) {
+                  if (state.status == Status.failure) {
+                    return CustomError(
+                      message: state.errorEnum.message(context.localizations),
+                    );
+                  }
+
+                  return Column(
+                    children: [
+                      ImageList(media: state.media),
+                      Builder(
+                        builder: (context) {
+                          if (state.status == Status.loading) {
+                            return CustomLoader(
+                              radius: state.media.isNotEmpty ? 20 : 40,
+                            );
+                          }
+
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
           ),
         ),
       ),

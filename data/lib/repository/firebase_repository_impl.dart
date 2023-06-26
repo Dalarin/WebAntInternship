@@ -2,44 +2,37 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 
 class FirebaseRepositoryImpl implements FirebaseRepository {
-  final likesCollection = FirebaseFirestore.instance.collection('likes');
-  final tagsCollection = FirebaseFirestore.instance.collection('tags');
+  final mediaCollection = FirebaseFirestore.instance.collection('media_info');
 
   @override
-  Future changeMediaLikes({required String mediaId}) async {
-    // TODO: implement changeMediaLikes
-    throw UnimplementedError();
-  }
+  Future<MediaInfoEntity?> getMediaInfo({required String mediaId}) async {
+    final mediaSnapshot = await mediaCollection.where('media_id', isEqualTo: mediaId).get();
 
-  @override
-  Future createTag({required String title}) {
-    // TODO: implement createTag
-    throw UnimplementedError();
-  }
+    final documents = mediaSnapshot.docs;
 
-  @override
-  Future<LikeEntity?> getMediaLikes({required String mediaId}) async {
-    final likesSnapshot = await likesCollection.where('media_id', isEqualTo: mediaId).get();
+    if (documents.isNotEmpty) {
+      final mediaInfo = documents.first.data();
 
-    final likes = likesSnapshot.docs;
-
-    if (likes.isNotEmpty) {
-      return LikeEntity.fromJson(likes.first.data());
+      return MediaInfoEntity.fromJson(mediaInfo);
     }
 
-    return null;
+    final emptyMediaInfo = {
+      'media_id': mediaId,
+      'likes': [],
+      'tags': [],
+    };
+
+    await mediaCollection.doc(mediaId).set(emptyMediaInfo);
+
+    return MediaInfoEntity.fromJson(emptyMediaInfo);
   }
 
   @override
-  Future<TagEntity?> getMediaTags({required String mediaId}) async {
-    final tagsSnapshot = await tagsCollection.where('media_id', isEqualTo: mediaId).get();
+  Future<MediaInfoEntity?> updateMediaInfo({required MediaInfoEntity entity}) async {
 
-    final tags = tagsSnapshot.docs;
 
-    if (tags.isNotEmpty) {
-      return TagEntity.fromJson(tags.first.data());
-    }
+    await mediaCollection.doc(entity.mediaId).set(entity.toJson());
 
-    return null;
+    return entity;
   }
 }

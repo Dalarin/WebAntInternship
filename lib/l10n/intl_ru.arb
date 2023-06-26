@@ -52,5 +52,8 @@
   "photo": "Фото",
   "gallery": "Галерея",
   "delete": "Удалить",
-  "acceptPermissions": "Ошибка! Предоставьте разрешения"
+  "acceptPermissions": "Ошибка! Предоставьте разрешения",
+  "fileUploaded": "Изображение успешно загружено",
+  "emptyDate": "Отсутствует дата",
+  "addTag": "Add tag"
 }

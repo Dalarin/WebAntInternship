@@ -94,6 +94,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     emit(state.copyWith(status: Status.loading));
     final response = await _loginUseCase.verifyAuthentication();
 
+    print(response);
+
     if (response != null) {
       return emit(
         state.copyWith(

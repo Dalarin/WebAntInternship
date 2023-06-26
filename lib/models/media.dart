@@ -9,6 +9,7 @@ class Media with _$Media {
   const factory Media({
     required int id,
     required String name,
+    required String description,
     DateTime? creationDate,
     Image? image,
     required bool newMedia,
@@ -16,13 +17,18 @@ class Media with _$Media {
     String? user,
   }) = _Media;
 
+  const Media._();
+
+
   factory Media.fromEntity(MediaEntity entity) {
     return Media(
       id: entity.id,
       name: entity.name,
+      description: entity.description,
       newMedia: entity.newMedia,
       popular: entity.popular,
       user: entity.user,
+      creationDate: entity.creationDate,
       image: Image.fromEntity(entity.image),
     );
   }

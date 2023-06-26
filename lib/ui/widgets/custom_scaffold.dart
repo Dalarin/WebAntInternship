@@ -8,7 +8,8 @@ import 'package:webant_internship/ui/navigation/app_router.dart';
 import 'package:webant_internship/ui/pages/authentication/login_screen.dart';
 import 'package:webant_internship/ui/pages/camera/bloc/camera_bloc.dart';
 import 'package:webant_internship/ui/pages/home/home_screen.dart';
-import 'package:webant_internship/ui/pages/profile/profile_screen.dart';
+
+import '../pages/user/profile_screen.dart';
 
 class CustomScaffold extends StatefulWidget {
   const CustomScaffold({super.key});
@@ -103,41 +104,34 @@ class _CustomScaffoldState extends State<CustomScaffold> {
   Widget build(BuildContext context) {
     final localization = context.localizations;
 
-    return BlocProvider(
-      create: (context) => CameraBloc(),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            bottomNavigationBar: BlocListener<CameraBloc, CameraState>(
-              listener: (context, state) {
-                if (state.status == Status.success) {
-                  AppRouter.pushToUploadImage(context);
-                }
-              },
-              child: BottomNavigationBar(
-                currentIndex: _currentIndex,
-                onTap: (int index) => _onTap(index, context),
-                items: [
-                  BottomNavigationBarItem(
-                    label: localization.feed,
-                    icon: const Icon(Icons.home),
-                  ),
-                  BottomNavigationBarItem(
-                    label: localization.addPhoto,
-                    icon: const Icon(Icons.add_a_photo_outlined),
-                  ),
-                  BottomNavigationBarItem(
-                    label: localization.profile,
-                    icon: const Icon(Icons.person),
-                  ),
-                ],
-              ),
-            ),
-            body: SafeArea(
-              child: children[_currentIndex],
-            ),
-          );
+    return Scaffold(
+      bottomNavigationBar: BlocListener<CameraBloc, CameraState>(
+        listener: (context, state) {
+          if (state.status == Status.success) {
+            AppRouter.pushToUploadImage(context);
+          }
         },
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (int index) => _onTap(index, context),
+          items: [
+            BottomNavigationBarItem(
+              label: localization.feed,
+              icon: const Icon(Icons.home),
+            ),
+            BottomNavigationBarItem(
+              label: localization.addPhoto,
+              icon: const Icon(Icons.add_a_photo_outlined),
+            ),
+            BottomNavigationBarItem(
+              label: localization.profile,
+              icon: const Icon(Icons.person),
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: children[_currentIndex],
       ),
     );
   }

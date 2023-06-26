@@ -19,7 +19,7 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
       queryParameters: {'limit': 15000},
     );
 
-    if (tokenResponse.statusCode == 201) {
+    if (tokenResponse.statusCode == 200) {
       final clientsWrapper = PaginatedWrapperEntity<ClientEntity>.fromJson(
         tokenResponse.data,
         (Object? json) {
@@ -28,6 +28,8 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
       );
 
       final client = clientsWrapper.data.where((element) => element.name == username).first;
+
+      print(client);
 
       final response = await Dio().get(
         'https://gallery.prod1.webant.ru/oauth/v2/token',
@@ -39,6 +41,12 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
           'client_secret': client.secret,
         },
       );
+
+      print('STATUS CODE: _______________________');
+
+      print(response.statusCode);
+
+      print(response.data);
 
       if (response.statusCode == 200) {
         final userResponse = await _dio.get(
@@ -54,7 +62,15 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
                 json as Map<String, dynamic>,
               );
             },
-          ).data.where((element) => element.username == username).first;
+          ).data.where((element) => element.email == username).first;
+
+          final loginEntity = LoginWrapperEntity(
+            clientEntity: client,
+            userEntity: userEntity,
+            loginEntity: LoginEntity.fromJson(response.data),
+          );
+
+          print('login entity = $loginEntity');
 
           return LoginWrapperEntity(
             clientEntity: client,
@@ -86,11 +102,16 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
         'birthday': birthDay?.toIso8601String(),
       },
     );
+
+    print(response.statusCode);
+
+    print(response.statusMessage);
+
     if (response.statusCode == 201) {
       final tokenResponse = await _dio.post(
         '/clients',
         data: {
-          'name': username,
+          'name': email,
           "allowedGrantTypes": [
             "password",
             "refresh_token",

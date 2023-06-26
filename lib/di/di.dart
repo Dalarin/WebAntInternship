@@ -5,8 +5,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:webant_internship/resources/app_const.dart';
 
-import '../generated/l10n.dart';
-
 GetIt injection = GetIt.I;
 
 Future<void> setDi() async {
@@ -39,7 +37,14 @@ Future<void> setDi() async {
     () => MediaRepositoryImpl(dio),
   );
 
+  injection.registerLazySingleton<FirebaseRepository>(
+    () => FirebaseRepositoryImpl(),
+  );
+
   injection.registerLazySingleton<AuthenticateRepository>(
     () => AuthenticateRepositoryImpl(dio),
+  );
+  injection.registerLazySingleton<UserRepository>(
+    () => UserRepositoryImpl(dio: dio, repository: securedStorage),
   );
 }

@@ -11,11 +11,9 @@ class CameraHelper {
     controller!.dispose();
   }
 
-
   static Future<XFile> takePictures() {
     return controller!.takePicture();
   }
-
 
   static Future<void> initialize() async {
     final cameras = await availableCameras();

@@ -5,7 +5,7 @@ import 'package:webant_internship/di/di.dart';
 import 'package:webant_internship/resources/resources.dart';
 import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:webant_internship/ui/widgets/custom_scaffold.dart';
+import 'package:webant_internship/ui/pages/authentication/splash_screen.dart';
 import 'package:webant_internship/usecases/login_usecase.dart';
 
 import 'firebase_options.dart';
@@ -43,7 +43,7 @@ class Application extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        home: const CustomScaffold(),
+        home: const SplashScreen(),
       ),
     );
   }

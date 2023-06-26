@@ -17,21 +17,24 @@ class CustomImage extends StatelessWidget {
       height: context.screenSize.height * 0.3,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: AppColors.inactiveColor,
+        color: AppColors.inactiveColor.withOpacity(0.5),
       ),
-      child: Image.network(
-        '${AppConst.mediaUrl}/${media.image?.name}',
-        fit: BoxFit.cover,
-        loadingBuilder: (context, widget, progress) {
-          if (progress == null) return widget;
-          return const CustomLoader();
-        },
-        errorBuilder: (context, _, __) {
-          return const Icon(
-            Icons.error_outline_outlined,
-            color: AppColors.errorColor,
-          );
-        },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: Image.network(
+          '${AppConst.mediaUrl}/${media.image?.name}',
+          fit: BoxFit.cover,
+          loadingBuilder: (context, widget, progress) {
+            if (progress == null) return widget;
+            return const CustomLoader();
+          },
+          errorBuilder: (context, _, __) {
+            return const Icon(
+              Icons.error_outline_outlined,
+              color: AppColors.errorColor,
+            );
+          },
+        ),
       ),
     );
   }

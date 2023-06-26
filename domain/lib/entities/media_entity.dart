@@ -11,9 +11,10 @@ class MediaEntity with _$MediaEntity {
     required final int id,
     @Default("") final String name,
     @Default("") final String description,
-    required final bool popular,
-    @JsonKey(name: 'new') required final bool newMedia,
     required final ImageEntity image,
+    @Default(false) final bool popular,
+    @JsonKey(name: 'new') @Default(false) final bool newMedia,
+    @JsonKey(name: 'dateCreate') DateTime? creationDate,
     final String? user,
   }) = _MediaEntity;
 

@@ -20,7 +20,7 @@ class SecuredStorageRepositoryImpl implements SharedPreferencesRepository {
   }
 
   @override
-  void saveLoginEntity({required LoginWrapperEntity entity}) async {
+  Future<void> saveLoginEntity({required LoginWrapperEntity entity}) async {
     await _secureStorage.write(
       key: 'login_data',
       value: jsonEncode(entity.toJson()),

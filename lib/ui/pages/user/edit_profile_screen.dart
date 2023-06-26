@@ -1,12 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:webant_internship/extensions/extensions.dart';
+import 'package:webant_internship/models/user.dart';
 
 import '../../../resources/resources.dart';
 import '../../widgets/widgets.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  final User user;
+
+  const EditProfileScreen({
+    super.key,
+    required this.user,
+  });
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();

@@ -51,6 +51,8 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       body: BlocListener<CameraBloc, CameraState>(
         listener: (context, state) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:webant_internship/extensions/error_enum_extension.dart';
 import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/ui/navigation/app_router.dart';
 import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';

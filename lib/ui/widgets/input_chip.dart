@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../resources/resources.dart';
 
-class TextFieldChip extends StatelessWidget {
-  const TextFieldChip({super.key});
+class TextFieldChip extends StatefulWidget {
+  final Function(String)? onSubmitted;
+  const TextFieldChip({super.key, this.onSubmitted});
+
+  @override
+  State<TextFieldChip> createState() => _TextFieldChipState();
+}
+
+class _TextFieldChipState extends State<TextFieldChip> {
+
+  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +27,7 @@ class TextFieldChip extends StatelessWidget {
       ),
       child: IntrinsicWidth(
         child: TextField(
+          controller: _controller,
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(bottom: 12),
             hintText: 'Input label..',
@@ -27,8 +37,10 @@ class TextFieldChip extends StatelessWidget {
             ),
             border: InputBorder.none,
           ),
-          onSubmitted: (String? text) {
-            if (text != null && text.isNotEmpty) {}
+          onSubmitted: (String value) {
+            widget.onSubmitted?.call(value);
+
+            _controller.clear();
           },
         ),
       ),

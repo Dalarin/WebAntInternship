@@ -22,4 +22,15 @@ class User with _$User {
       birthDate: entity.birthDay,
     );
   }
+
+  const User._();
+
+  UserEntity toEntity() {
+    return UserEntity(
+      id: id,
+      email: email,
+      enabled: true,
+      username: userName,
+    );
+  }
 }

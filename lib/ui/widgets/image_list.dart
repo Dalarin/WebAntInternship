@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:webant_internship/ui/navigation/app_router.dart';
 import 'package:webant_internship/ui/widgets/widgets.dart';
 
 import '../../models/media.dart';
 
 class ImageList extends StatelessWidget {
   final List<Media> media;
+
   const ImageList({super.key, required this.media});
 
   @override
@@ -21,7 +23,12 @@ class ImageList extends StatelessWidget {
         childAspectRatio: 1 / .7,
       ),
       itemBuilder: (BuildContext context, int index) {
-        return CustomImage(media: media[index]);
+        return GestureDetector(
+          onTap: () {
+            AppRouter.pushToMediaScreen(context, media: media[index]);
+          },
+          child: CustomImage(media: media[index]),
+        );
       },
     );
   }

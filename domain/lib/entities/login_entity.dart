@@ -11,7 +11,7 @@ class LoginEntity with _$LoginEntity {
     @JsonKey(name: 'expires_in') required int expiresIn,
     @JsonKey(name: 'token_type') required String tokenType,
     @JsonKey(name: 'refresh_token') required String refreshToken,
-    required String scope,
+    String? scope,
   }) = _LoginEntity;
 
   factory LoginEntity.fromJson(Map<String, dynamic> json) => _$LoginEntityFromJson(json);

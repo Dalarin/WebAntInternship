@@ -21,8 +21,10 @@ class LoginUseCase {
       password: password,
     );
 
+    print(response);
+
     if (response != null) {
-      _securedStorage.saveLoginEntity(entity: response);
+      await _securedStorage.saveLoginEntity(entity: response);
 
       return User.fromEntity(response.userEntity);
     }
@@ -44,7 +46,7 @@ class LoginUseCase {
     );
 
     if (response != null) {
-      _securedStorage.saveLoginEntity(entity: response);
+      await _securedStorage.saveLoginEntity(entity: response);
 
       return User.fromEntity(response.userEntity);
     }
