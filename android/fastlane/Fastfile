@@ -1,0 +1,63 @@
+
+
+default_platform(:android)
+
+def root_path
+  Dir.pwd.sub(/.*\Kfastlane/, '').sub(/.*\Kandroid/, '').sub(/.*\Kios/, '').sub(/.*\K\/\//, '')
+end
+
+lane :sh_on_root do |options|
+  command = options[:command]
+  sh("cd #{root_path} && #{command}")
+end
+
+lane :fetch_dependencies do
+  sh_on_root(command: "flutter pub get --suppress-analytics")
+end
+
+lane :build_apk do
+  sh_on_root(command: "flutter build apk --split-per-abi")
+end
+
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+
+  lane :alpha do
+
+    fetch_dependencies
+    build_apk
+
+
+    appcenter_upload(
+      notify_testers: true
+      owner_type: "user",
+      owner_name: "dalarin",
+      app_name: "WebAntGallery-1",
+      api_token: "",
+      file: "../build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk",
+    )
+  end
+
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+end
+
+

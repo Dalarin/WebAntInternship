@@ -29,8 +29,6 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
 
       final client = clientsWrapper.data.where((element) => element.name == username).first;
 
-      print(client);
-
       final response = await Dio().get(
         'https://gallery.prod1.webant.ru/oauth/v2/token',
         queryParameters: {
@@ -41,12 +39,6 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
           'client_secret': client.secret,
         },
       );
-
-      print('STATUS CODE: _______________________');
-
-      print(response.statusCode);
-
-      print(response.data);
 
       if (response.statusCode == 200) {
         final userResponse = await _dio.get(
@@ -69,8 +61,6 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
             userEntity: userEntity,
             loginEntity: LoginEntity.fromJson(response.data),
           );
-
-          print('login entity = $loginEntity');
 
           return LoginWrapperEntity(
             clientEntity: client,
@@ -102,10 +92,6 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
         'birthday': birthDay?.toIso8601String(),
       },
     );
-
-    print(response.statusCode);
-
-    print(response.statusMessage);
 
     if (response.statusCode == 201) {
       final tokenResponse = await _dio.post(

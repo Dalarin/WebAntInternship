@@ -67,5 +67,10 @@ flutter {
 }
 
 dependencies {
+
+    def appCenterSdkVersion = '5.0.0'
+    implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
+
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

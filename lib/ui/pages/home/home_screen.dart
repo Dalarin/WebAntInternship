@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             unselectedLabelColor: AppColors.inactiveColor,
             labelStyle: textTheme.headlineSmall,
             tabs: [
-              Tab(text: localization.newMedia),
+              const Tab(text: 'Релиз'),
               Tab(text: localization.popular),
             ],
           ),
