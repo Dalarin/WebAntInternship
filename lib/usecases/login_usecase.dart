@@ -21,8 +21,6 @@ class LoginUseCase {
       password: password,
     );
 
-    print(response);
-
     if (response != null) {
       await _securedStorage.saveLoginEntity(entity: response);
 

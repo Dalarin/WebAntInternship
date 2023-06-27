@@ -42,8 +42,13 @@ class ImageScreen extends StatelessWidget {
                   children: [
                     Stack(
                       children: [
-                        CustomImage(
-                          media: media,
+                        GestureDetector(
+                          onTap: () {
+                            _showPreviewImageDialog(context);
+                          },
+                          child: CustomImage(
+                            media: media,
+                          ),
                         ),
                         Align(
                           alignment: Alignment.bottomRight,
@@ -149,6 +154,26 @@ class ImageScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  void _showPreviewImageDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          content: SizedBox(
+            height: context.screenSize.height * 0.5,
+            width: context.screenSize.width * 0.8,
+            child: CustomImage(
+              media: media,
+            ),
+          ),
+        );
+      },
     );
   }
 }

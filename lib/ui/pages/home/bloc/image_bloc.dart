@@ -82,6 +82,9 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
     Emitter<ImageState> emit,
   ) async {
     try {
+
+      emit(state.copyWith(status: Status.loading));
+
       if (state.hasReachedMax) return;
 
       int page = (state.media.length ~/ 10) + 1;

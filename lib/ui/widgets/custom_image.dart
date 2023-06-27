@@ -7,8 +7,13 @@ import 'widgets.dart';
 
 class CustomImage extends StatelessWidget {
   final Media media;
+  final BoxFit fit;
 
-  const CustomImage({super.key, required this.media});
+  const CustomImage({
+    super.key,
+    this.fit = BoxFit.cover,
+    required this.media,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class CustomImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         child: Image.network(
           '${AppConst.mediaUrl}/${media.image?.name}',
-          fit: BoxFit.cover,
+          fit: fit,
           loadingBuilder: (context, widget, progress) {
             if (progress == null) return widget;
             return const CustomLoader();
@@ -38,4 +43,5 @@ class CustomImage extends StatelessWidget {
       ),
     );
   }
+
 }

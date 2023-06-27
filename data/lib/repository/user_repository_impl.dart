@@ -52,7 +52,13 @@ class UserRepositoryImpl implements UserRepository {
     required password,
     required String userId,
   }) async {
-    final userResponse = await _dio.put('/users/update_password/$userId');
+    final userResponse = await _dio.put(
+      '/users/update_password/$userId',
+      data: {
+        'oldPassword': oldPassword,
+        'newPassword': password,
+      },
+    );
 
     if (userResponse.statusCode == 200) {
       return UserEntity.fromJson(userResponse.data);

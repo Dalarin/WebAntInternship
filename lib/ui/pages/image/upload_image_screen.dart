@@ -49,7 +49,7 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
                 ),
               );
 
-              AppMessenger.of(context).showSnackBar(context.localizations.fileUploaded);
+              AppMessenger.of(context).showSnackBar(localization.fileUploaded);
 
               AppRouter.popUntilHome(context);
             }

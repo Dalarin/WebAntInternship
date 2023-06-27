@@ -55,5 +55,8 @@
   "acceptPermissions": "Ошибка! Предоставьте разрешения",
   "fileUploaded": "Изображение успешно загружено",
   "emptyDate": "Отсутствует дата",
-  "addTag": "Add tag"
+  "addTag": "Add tag",
+  "inputLabelHint": "Input label..",
+  "errorUpdate": "Ошибка обновления данных",
+  "dataUpdated": "Данные успешно обновлены"
 }

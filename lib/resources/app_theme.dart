@@ -7,9 +7,10 @@ class AppTheme {
     useMaterial3: true,
     fontFamily: 'Roboto',
     appBarTheme: const AppBarTheme(
-        iconTheme: IconThemeData(
-      color: AppColors.titleColor,
-    )),
+      iconTheme: IconThemeData(
+        color: AppColors.titleColor,
+      ),
+    ),
     snackBarTheme: const SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
     ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import 'package:webant_internship/extensions/extensions.dart';
+import 'package:webant_internship/helpers/date_converter_helper.dart';
 import 'package:webant_internship/ui/navigation/app_router.dart';
 import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
 
@@ -138,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (date != null) {
       _selectedDate = date;
-      _birthDateController.text = DateFormat.yMMMd().format(_selectedDate!);
+      _birthDateController.text = DateConverterHelper.convertDate(_selectedDate!);
     }
   }
 }

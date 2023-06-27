@@ -80,10 +80,52 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   FutureOr<void> _onChangePassword(
     _ChangePassword event,
     Emitter<UserState> emit,
-  ) {}
+  ) async {
+    emit(state.copyWith(status: Status.loading));
+
+    final user = await _useCase.changeUserPassword(
+      oldPassword: event.oldPassword,
+      password: event.newPassword,
+      userId: event.userId.toString(),
+    );
+
+    if (user != null) {
+      return emit(
+        state.copyWith(
+          user: user,
+          status: Status.success,
+        ),
+      );
+    }
+
+    return emit(
+      state.copyWith(
+        status: Status.failure,
+      ),
+    );
+  }
 
   FutureOr<void> _onUpdateUser(
     _UpdateUser event,
     Emitter<UserState> emit,
-  ) {}
+  ) async {
+    emit(state.copyWith(status: Status.loading));
+
+    final user = await _useCase.updateUser(user: event.user);
+
+    if (user != null) {
+      return emit(
+        state.copyWith(
+          user: user,
+          status: Status.success,
+        ),
+      );
+    }
+
+    return emit(
+      state.copyWith(
+        status: Status.failure,
+      ),
+    );
+  }
 }

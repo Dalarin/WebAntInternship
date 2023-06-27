@@ -15,10 +15,6 @@ class MiddlewareInterceptor implements Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    print(err.response?.statusCode);
-
-    print(err.response?.data);
-
     switch (err.response?.statusCode) {
       case 400:
         handler.reject(BadRequest(requestOptions: err.requestOptions));
@@ -50,8 +46,6 @@ class MiddlewareInterceptor implements Interceptor {
     if (response != null) {
       final tokenResponse = await _refreshRepository.refreshToken(entity: response);
 
-      print('Refresh token : $tokenResponse');
-
       if (tokenResponse != null) {
         _repository.saveLoginEntity(
           entity: response.copyWith(
@@ -59,7 +53,7 @@ class MiddlewareInterceptor implements Interceptor {
           ),
         );
 
-        options.headers = {'Authorization': 'Bearer ${tokenResponse.refreshToken}'};
+        options.headers = {'Authorization': 'Bearer ${tokenResponse.accessToken}'};
 
         final newRequest = await Dio().request(
           '${options.baseUrl}${options.path}',

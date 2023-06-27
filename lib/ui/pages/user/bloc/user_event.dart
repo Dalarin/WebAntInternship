@@ -7,6 +7,7 @@ class UserEvent with _$UserEvent {
   const factory UserEvent.changePassword({
     required String oldPassword,
     required String newPassword,
+    required int userId,
   }) = _ChangePassword;
 
   const factory UserEvent.getCurrentUser() = _GetCurrentUser;
