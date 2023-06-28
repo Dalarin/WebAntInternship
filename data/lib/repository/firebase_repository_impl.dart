@@ -29,8 +29,6 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
 
   @override
   Future<MediaInfoEntity?> updateMediaInfo({required MediaInfoEntity entity}) async {
-
-
     await mediaCollection.doc(entity.mediaId).set(entity.toJson());
 
     return entity;

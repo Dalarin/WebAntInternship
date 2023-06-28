@@ -4,6 +4,7 @@ import 'package:data/data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:webant_internship/extensions/extensions.dart';
+import 'package:webant_internship/helpers/helpers.dart';
 import 'package:webant_internship/usecases/login_usecase.dart';
 
 import '../../../../resources/resources.dart';
@@ -33,26 +34,54 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     try {
       emit(state.copyWith(status: Status.loading));
 
+      Map<Fields, FieldsError>? errors = {
+        ...?ValidatorHelper.validateField(Fields.emailField, event.email),
+        ...?ValidatorHelper.validateField(Fields.emailField, event.password),
+      };
+
+      if (errors.isNotEmpty) {
+        return emit(
+          state.copyWith(
+            fields: errors,
+            status: Status.failure,
+          ),
+        );
+      }
+
       final response = await _loginUseCase.authenticate(
         username: event.email,
         password: event.password,
       );
 
       if (response != null) {
-        return emit(state.copyWith(status: Status.success));
+        return emit(
+          state.copyWith(
+            status: Status.success,
+            fields: errors,
+          ),
+        );
       }
 
-      return emit(state.copyWith(status: Status.failure));
+      return emit(
+        state.copyWith(
+          status: Status.failure,
+          fields: errors,
+        ),
+      );
     } on BaseException catch (exception) {
       return emit(
         state.copyWith(
+          fields: {},
           status: Status.failure,
           errorEnum: exception.errorEnum,
         ),
       );
     } catch (_) {
       return emit(
-        state.copyWith(status: Status.failure),
+        state.copyWith(
+          fields: {},
+          status: Status.failure,
+        ),
       );
     }
   }
@@ -63,6 +92,22 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   ) async {
     try {
       emit(state.copyWith(status: Status.loading));
+
+      Map<Fields, FieldsError>? errors = {
+        ...?ValidatorHelper.validateEmail(event.email),
+        ...?ValidatorHelper.validatePassword(event.password),
+        ...?ValidatorHelper.validateField(Fields.usernameField, event.username),
+        ...?ValidatorHelper.validateRepeatField(event.password, event.repeatPassword),
+      };
+
+      if (errors.isNotEmpty) {
+        return emit(
+          state.copyWith(
+            fields: errors,
+            status: Status.failure,
+          ),
+        );
+      }
 
       final response = await _loginUseCase.register(
         username: event.username,
@@ -78,11 +123,18 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       }
 
       return emit(
-        state.copyWith(status: Status.success),
+        state.copyWith(
+          status: Status.failure,
+          fields: {},
+        ),
       );
     } on BaseException catch (exception) {
       return emit(
-        state.copyWith(status: Status.failure, errorEnum: exception.errorEnum),
+        state.copyWith(
+          fields: {},
+          status: Status.failure,
+          errorEnum: exception.errorEnum,
+        ),
       );
     }
   }
@@ -93,8 +145,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   ) async {
     emit(state.copyWith(status: Status.loading));
     final response = await _loginUseCase.verifyAuthentication();
-
-    print(response);
 
     if (response != null) {
       return emit(

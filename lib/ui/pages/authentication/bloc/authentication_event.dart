@@ -13,6 +13,7 @@ class AuthenticationEvent with _$AuthenticationEvent {
     required String username,
     required String email,
     required String password,
+    required String repeatPassword,
     DateTime? birthDate,
   }) = _Register;
 }

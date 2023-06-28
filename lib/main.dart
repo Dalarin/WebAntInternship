@@ -2,9 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webant_internship/di/di.dart';
+import 'package:webant_internship/helpers/helpers.dart';
 import 'package:webant_internship/resources/resources.dart';
-import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
 import 'package:webant_internship/ui/pages/authentication/splash_screen.dart';
 import 'package:webant_internship/usecases/login_usecase.dart';
 
@@ -18,6 +19,9 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await NotificationHelper.initializeNotifications();
+  await FirebaseNotificationHelper.initializeHelper();
 
   runApp(const Application());
 }

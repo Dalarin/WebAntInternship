@@ -10,17 +10,33 @@ class MediaRepositoryImpl implements MediaRepository {
   Future<PaginatedWrapperEntity<MediaEntity>?> getMedia({
     int limit = 10,
     int page = 0,
+    By by = By.defaultQuery,
+    String? query,
+    int? userId,
     bool popular = false,
     bool newMedia = false,
   }) async {
+    Map<String, dynamic> queryParameters = {
+      'limit': limit,
+      'page': page,
+    };
+
+    if (by == By.user) {
+      queryParameters.addAll({by.value: userId!});
+    } else if (by == By.query) {
+      queryParameters.addAll({by.value: query!});
+    } else {
+      queryParameters.addAll(
+        {
+          'popular': popular,
+          'new': newMedia,
+        },
+      );
+    }
+
     final response = await _dio.get(
       '/photos',
-      queryParameters: {
-        'limit': limit,
-        'page': page,
-        'popular': popular,
-        'new': newMedia,
-      },
+      queryParameters: queryParameters,
     );
 
     if (response.statusCode == 200) {

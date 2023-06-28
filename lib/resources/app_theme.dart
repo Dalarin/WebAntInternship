@@ -12,6 +12,7 @@ class AppTheme {
       ),
     ),
     snackBarTheme: const SnackBarThemeData(
+      backgroundColor: AppColors.titleColor,
       behavior: SnackBarBehavior.floating,
     ),
     colorSchemeSeed: AppColors.primaryColor,

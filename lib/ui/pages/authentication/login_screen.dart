@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webant_internship/extensions/extensions.dart';
+import 'package:webant_internship/extensions/field_enum_extension.dart';
 import 'package:webant_internship/ui/navigation/app_router.dart';
 import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
 
@@ -29,31 +30,40 @@ class _LoginScreenState extends State<LoginScreen> {
         title: Text(localization.logIn),
         centerTitle: true,
       ),
-      body: BlocListener<AuthenticationBloc, AuthenticationState>(
+      body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: _authorizationListener,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 30,
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  CustomTextField(
-                    hint: localization.email,
-                    controller: _emailController,
-                  ),
-                  CustomTextField(
-                    hint: localization.password,
-                    controller: _passwordController,
-                  ),
-                  CustomButton(
-                    callback: () {
-                      final validate = _formKey.currentState?.validate();
+        builder: (context, state) {
+          final values = state.fields;
 
-                      if (validate == true) {
+          final keys = state.fields!.keys;
+
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 30,
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    CustomTextField(
+                      hint: localization.email,
+                      controller: _emailController,
+                      showError: keys.contains(Fields.emailField),
+                      errorText: values?[Fields.emailField]?.message(localization),
+                    ),
+                    CustomTextField(
+                      hint: localization.password,
+                      controller: _passwordController,
+                      showError: keys.contains(Fields.passwordField),
+                      errorText: values?[Fields.passwordField]?.message(localization),
+                    ),
+                    CustomButton(
+                      callback: () {
+                        // final validate = _formKey.currentState?.validate();
+
+                        // if (validate == true) {
                         final bloc = context.read<AuthenticationBloc>();
 
                         bloc.add(
@@ -62,26 +72,27 @@ class _LoginScreenState extends State<LoginScreen> {
                             password: _passwordController.text,
                           ),
                         );
-                      }
-                    },
-                    buttonText: localization.logIn,
-                    buttonColor: Colors.black,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
+                        // }
+                      },
+                      buttonText: localization.logIn,
+                      buttonColor: Colors.black,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    child: Text(localization.createAnAccount),
-                    onPressed: () {
-                      AppRouter.pushToRegistration(context);
-                    },
-                  )
-                ],
+                    TextButton(
+                      child: Text(localization.createAnAccount),
+                      onPressed: () {
+                        AppRouter.pushToRegistration(context);
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -92,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (state.status == Status.success) {
       AppRouter.pushToHome(context);
     }
-    if (state.status == Status.failure) {
+    if (state.status == Status.failure && (state.fields?.isEmpty ?? true)) {
       AppMessenger.of(context).showSnackBar(
         state.errorEnum.message(context.localizations),
       );

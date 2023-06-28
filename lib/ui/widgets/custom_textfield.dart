@@ -6,10 +6,12 @@ class CustomTextField extends StatelessWidget {
   final bool required;
   final bool readOnly;
   final int maxLines;
+  final String? errorText;
   final Widget? suffixIcon;
   final TextEditingController controller;
   final VoidCallback? callback;
   final Function(String?)? onChange;
+  final bool showError;
   final String? Function(String?)? validator;
 
   const CustomTextField({
@@ -18,8 +20,10 @@ class CustomTextField extends StatelessWidget {
     this.callback,
     this.onChange,
     this.suffixIcon,
+    this.errorText,
     this.readOnly = false,
     this.required = true,
+    this.showError = false,
     this.maxLines = 1,
     required this.hint,
     required this.controller,
@@ -34,19 +38,12 @@ class CustomTextField extends StatelessWidget {
         readOnly: readOnly,
         onTap: callback,
         onChanged: onChange,
-        validator: (String? text) {
-          if (!required) return null;
-
-          if (text == null || text.isEmpty) {
-            return context.localizations.fillField(hint);
-          }
-          return validator?.call(text);
-        },
         controller: controller,
         decoration: InputDecoration(
           label: Text(hint),
           suffixIcon: suffixIcon,
           hintText: hint,
+          errorText: showError && required ? errorText : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),

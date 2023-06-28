@@ -9,13 +9,10 @@ class MainActivity : FlutterActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
-        AppCenter.start(application, "", Distribute::class.java)
+        AppCenter.start(application, "b5315862-6d2b-4311-98f2-1d92f6a532cd", Distribute::class.java)
 
         super.onCreate(savedInstanceState)
     }
-
 
 
 }

@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     _currentTabIndex = _tabController.index;
     final bloc = context.read<ImageBloc>();
 
-
     if (bloc.state.status != Status.loading) {
       bloc.add(
         ImageEvent.getImages(
@@ -66,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             unselectedLabelColor: AppColors.inactiveColor,
             labelStyle: textTheme.headlineSmall,
             tabs: [
-              const Tab(text: 'Релиз'),
+              Tab(text: localization.newMedia),
               Tab(text: localization.popular),
             ],
           ),

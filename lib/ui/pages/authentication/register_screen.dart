@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:webant_internship/extensions/extensions.dart';
+import 'package:webant_internship/extensions/field_enum_extension.dart';
 import 'package:webant_internship/helpers/date_converter_helper.dart';
 import 'package:webant_internship/ui/navigation/app_router.dart';
 import 'package:webant_internship/ui/pages/authentication/bloc/authentication_bloc.dart';
@@ -36,22 +37,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
         title: Text(localization.createAccount),
         centerTitle: true,
       ),
-      body: BlocListener<AuthenticationBloc, AuthenticationState>(
+      body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: _authorizationListener,
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 30,
-              ),
-              child: Form(
-                key: _formKey,
+        builder: (context, state) {
+          final values = state.fields;
+
+          final keys = state.fields!.keys;
+
+          return SingleChildScrollView(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 30,
+                ),
                 child: Column(
                   children: [
                     CustomTextField(
                       hint: localization.usernameRequired,
                       controller: _usernameController,
+                      showError: keys.contains(Fields.usernameField),
+                      errorText: values?[Fields.usernameField]?.message(localization),
                     ),
                     CustomTextField(
                       readOnly: true,
@@ -63,16 +69,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     CustomTextField(
                       hint: localization.emailRequired,
                       controller: _emailController,
+                      showError: keys.contains(Fields.emailField),
+                      errorText: values?[Fields.emailField]?.message(localization),
                     ),
                     CustomTextField(
-                      validator: _validatePasswordIdentity,
                       hint: localization.passwordRequired,
                       controller: _passwordController,
+                      showError: keys.contains(Fields.passwordField),
+                      errorText: values?[Fields.passwordField]?.message(localization),
                     ),
                     CustomTextField(
-                      validator: _validatePasswordIdentity,
                       hint: localization.confirmPasswordRequired,
                       controller: _repeatPasswordController,
+                      showError: keys.contains(Fields.repeatPasswordField),
+                      errorText: values?[Fields.repeatPasswordField]?.message(localization),
                     ),
                     const SizedBox(height: 30),
                     CustomButton(
@@ -83,45 +93,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fontSize: 15,
                       ),
                       callback: () {
-                        final validate = _formKey.currentState?.validate();
-                        if (validate == true) {
-                          final bloc = context.read<AuthenticationBloc>();
+                        final bloc = context.read<AuthenticationBloc>();
 
-                          bloc.add(
-                            AuthenticationEvent.register(
-                              username: _usernameController.text,
-                              email: _emailController.text,
-                              birthDate: _selectedDate,
-                              password: _passwordController.text,
-                            ),
-                          );
-                        }
+                        bloc.add(
+                          AuthenticationEvent.register(
+                            username: _usernameController.text,
+                            email: _emailController.text,
+                            birthDate: _selectedDate,
+                            password: _passwordController.text,
+                            repeatPassword: _repeatPasswordController.text,
+                          ),
+                        );
                       },
                     ),
                   ],
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 
-  String? _validatePasswordIdentity(String? value) {
-    if (_passwordController.text != _repeatPasswordController.text) {
-      return context.localizations.passwordMissmatch;
-    }
-    return null;
-  }
-
   void _authorizationListener(BuildContext context, AuthenticationState state) {
-    AppMessenger.of(context).showLoadingMenu();
+    if (state.fields?.keys.isEmpty ?? true) {
+      AppMessenger.of(context).showLoadingMenu();
+    }
 
     if (state.status == Status.success) {
       AppRouter.pushToHome(context);
     }
-    if (state.status == Status.failure) {
+    if (state.status == Status.failure && (state.fields?.keys.isEmpty ?? true)) {
       AppMessenger.of(context).showSnackBar(
         state.errorEnum.message(context.localizations),
       );

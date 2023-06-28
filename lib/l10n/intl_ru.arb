@@ -58,5 +58,8 @@
   "addTag": "Add tag",
   "inputLabelHint": "Input label..",
   "errorUpdate": "Ошибка обновления данных",
-  "dataUpdated": "Данные успешно обновлены"
+  "dataUpdated": "Данные успешно обновлены",
+  "emailNotValid": "Email not valid",
+  "passwordNotValid": "The password must contain at least 8 characters",
+  "passwordsDontMatch": "Passwords don't match"
 }

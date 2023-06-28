@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:webant_internship/extensions/build_context_extension.dart';
 import 'package:webant_internship/extensions/extensions.dart';
 import 'package:webant_internship/resources/resources.dart';
 

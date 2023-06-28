@@ -12,8 +12,6 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
     required String password,
   }) async {
     // Get token
-
-    // Какой - то кринж
     final tokenResponse = await _dio.get(
       '/clients',
       queryParameters: {'limit': 15000},
@@ -62,11 +60,7 @@ class AuthenticateRepositoryImpl implements AuthenticateRepository {
             loginEntity: LoginEntity.fromJson(response.data),
           );
 
-          return LoginWrapperEntity(
-            clientEntity: client,
-            userEntity: userEntity,
-            loginEntity: LoginEntity.fromJson(response.data),
-          );
+          return loginEntity;
         }
       }
     }

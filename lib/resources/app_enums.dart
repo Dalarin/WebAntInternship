@@ -13,3 +13,17 @@ enum ErrorEnum {
   timeOut,
   unknown
 }
+
+enum Fields {
+  emailField,
+  passwordField,
+  usernameField,
+  repeatPasswordField,
+  titleField,
+  descriptionField;
+}
+
+
+enum FieldsError {
+  emptyField, emailError, passwordError, fieldsNotSimilar
+}

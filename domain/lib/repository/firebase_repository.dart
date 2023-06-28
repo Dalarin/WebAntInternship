@@ -4,7 +4,4 @@ abstract class FirebaseRepository {
   Future<MediaInfoEntity?> getMediaInfo({required String mediaId});
 
   Future<MediaInfoEntity?> updateMediaInfo({required MediaInfoEntity entity});
-
-
-
 }

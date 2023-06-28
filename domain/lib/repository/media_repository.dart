@@ -1,6 +1,4 @@
-import 'package:domain/entities/paginated_entity_wrapper.dart';
-
-import '../entities/media_entity.dart';
+import 'package:domain/domain.dart';
 
 abstract class MediaRepository {
   Future<PaginatedWrapperEntity<MediaEntity>?> getMedia({
@@ -8,7 +6,9 @@ abstract class MediaRepository {
     int page,
     bool popular = false,
     bool newMedia = false,
+    By by = By.defaultQuery,
   });
+
   Future<PaginatedWrapperEntity<MediaEntity>?> getMediaByUserId({
     int limit = 10,
     int page,
@@ -20,6 +20,4 @@ abstract class MediaRepository {
     required String description,
     required String filePath,
   });
-
-
 }

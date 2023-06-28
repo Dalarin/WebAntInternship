@@ -13,3 +13,4 @@ export 'package:domain/repository/secured_storage_repository.dart';
 export 'package:domain/repository/refresh_token_repository.dart';
 export 'package:domain/repository/firebase_repository.dart';
 export 'package:domain/repository/user_repository.dart';
+export 'package:domain/helpers/enums.dart';

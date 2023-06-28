@@ -30,9 +30,6 @@ platform :android do
   lane :beta do
     gradle(task: "clean assembleRelease")
     crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
   end
 
 
@@ -47,7 +44,7 @@ platform :android do
       owner_type: "user",
       owner_name: "dalarin",
       app_name: "WebAntGallery-1",
-      api_token: "",
+      api_token: "0af75264794a4b18d869911a94bef956987e0e03",
       file: "../build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk",
     )
   end

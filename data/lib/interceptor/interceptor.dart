@@ -41,8 +41,6 @@ class MiddlewareInterceptor implements Interceptor {
   Future<void> _refreshToken(RequestOptions options, ErrorInterceptorHandler handler) async {
     final response = await _repository.getLoginEntity();
 
-    print(response);
-
     if (response != null) {
       final tokenResponse = await _refreshRepository.refreshToken(entity: response);
 
